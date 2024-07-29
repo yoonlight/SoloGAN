@@ -82,6 +82,9 @@ elif opt.name == 'ages1':
 elif opt.name == 'ages2':
     domain_names = ['4_11', '18_29', '41_55', '66_80']
 
+elif opt.name == 'label2crack':
+    domain_names = ['label', 'BCL', 'DeepCrack', 'Volker']
+
 else:
     domain_names = opt.name.split('2')
 

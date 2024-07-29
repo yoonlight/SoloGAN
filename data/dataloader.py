@@ -38,17 +38,18 @@ class UpPairedDataset(Dataset):
         self.preprocess()
         print('Finished preprocessing dataset..!')
         if isTrain:     # train, add flip
-            if format == 'png':
-                trs = [transforms.RandomCrop(crop_size)]
-                print("         $$$$$ Do not resize the image, crop_size is {} !!!!".format(crop_size)) 
+            # if format == 'png':
+            #     trs = [transforms.RandomCrop(crop_size)]
+            #     print("         $$$$$ Do not resize the image, crop_size is {} !!!!".format(crop_size)) 
                 
-            elif int(crop_size) == 256 and format != 'png':    # not segmentation dataset, which means, resize, then crop
-                trs = [transforms.Resize(img_size, interpolation=Image.ANTIALIAS), transforms.RandomCrop(crop_size)]
-                print("      $$$$$ The dataset is not hair and segmentation dataset #####")
+            # elif int(crop_size) == 256 and format != 'png':    # not segmentation dataset, which means, resize, then crop
+            #     trs = [transforms.Resize(img_size, interpolation=Image.ANTIALIAS), transforms.RandomCrop(crop_size)]
+            #     print("      $$$$$ The dataset is not hair and segmentation dataset #####")
                 
-            else:
-                print("     ^^^^^^^ Operating on Hairs  dataset @@@@@@@")
-                trs = [transforms.RandomCrop(crop_size), transforms.Resize(img_size, interpolation=Image.ANTIALIAS)]
+            # else:
+            #     print("     ^^^^^^^ Operating on Hairs  dataset @@@@@@@")
+            #     trs = [transforms.RandomCrop(crop_size), transforms.Resize(img_size, interpolation=Image.ANTIALIAS)]
+            trs = [transforms.Resize(img_size, interpolation=Image.ANTIALIAS), transforms.RandomCrop(crop_size)]
                 
             trs.append(transforms.RandomHorizontalFlip())
         else:
@@ -78,14 +79,16 @@ class UpPairedDataset(Dataset):
         if self.isTrain:
             for i in range(max(self.sourceD)+1):
                 dir = trainDirs[i]
-                filenames = glob("{}/{}/*.{}".format(self.image_path, dir, self.format))
+                # filenames = glob("{}/{}/*.{}".format(self.image_path, dir, self.format))
+                filenames = glob("{}/{}/*.*".format(self.image_path, dir))
                 random.shuffle(filenames)
                 self.filenames.append(filenames)
                 self.num.append(len(filenames))
         else:
             for i in range(max(self.sourceD)+1):
                 dir = testDirs[i]
-                filenames = glob("{}/{}/*.{}".format(self.image_path, dir, self.format))
+                # filenames = glob("{}/{}/*.{}".format(self.image_path, dir, self.format))
+                filenames = glob("{}/{}/*.*".format(self.image_path, dir))
                 filenames.sort()  #
                 self.filenames.append(filenames)
                 self.num.append(len(filenames))
